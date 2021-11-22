@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="description" content="DataFlow | Candidate Testing Portal">
+    {% load staticfiles %}
+    <!-- Favicon -->
+    <link rel="icon" href="{% static 'images/DF Logo.svg' %}">
+
+    <!-- CDN CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{% static 'css/admin_home.css' %}">
+
+    <!-- Fontawesome -->
+    <script src="https://kit.fontawesome.com/11dafce953.js" crossorigin="anonymous"></script>
+
+    <title>Final Submissions</title>
+</head>
+<body>
+
+    <noscript>
+        Your Browser's JavaScript has been turned off kindly enable it.
+    </noscript>
+
+    {% include 'adminboard/header.html' %}
+
+    {% if email in authorized_admin %}
+    <main class="board container-fluid">
+
+        {% include 'adminboard/aside.html' %}
+
+        <div class="screen">
+            <div class="screen__table">
+                <div class="screen__table__top">
+                    <h3 class="table-title">Finalize</h3>
+                </div>
+
+                <div class="screen__table__sect">
+                    <table class="table" id="subTable">
+                    <thead>
+                        <tr>
+                            <th scope="row">Name</th>
+                            <th scope="row">Email</th>
+                            <th scope="row">Phone</th>
+                            <th scope="row">Profile</th>
+                            <th scope="row">Team</th>
+                            <th scope="row">Location</th>
+                            <th scope="row">Reasoning</th>
+                            <th scope="row">English</th>
+                            <th scope="row">Quantitative</th>
+                            <th scope="row">Total</th>
+                            <th scope="row">Resume</th>
+<!--                            <th scope="row">Status</th>-->
+                            <th scope="row">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                    {% for i in data %}
+                        <tr>
+                            <td class="">{{ i.fullname }}</td>
+                            <td>{{ i.email }}</td>
+                            <td>{{ i.phone }}</td>
+                            <td>{{ i.designation }}</td>
+                            <td>{{ i.team }}</td>
+                            <td>{{ i.location }}</td>
+                            <td>{{ i.score_reasoning }}%</td>
+                            <td>{{ i.score_english }}%</td>
+                            <td>{{ i.score_math }}%</td>
+                            <td>{{ i.score }}%</td>
+                            <td><a href="/media/{{ i.resume }}">Resume</a></td>
+                            <td>
+                                <form method="post" action="{% url 'adminboard:candaction' id=i.id %}" class="finalForm">{% csrf_token %}
+<!--                                    {% if i.candempid == 'Nan' %}-->
+<!--                                    <input type="text" name="empId" class="empID" value="" placeholder="Employee ID">-->
+<!--                                    {% else %}-->
+<!--                                    <input type="text" name="empId" class="empID" value="{{ i.candempid }}" readonly>-->
+<!--                                    {% endif %}-->
+                                    {% if i.selectionstatus == 'Pending' %}
+                                    <select name="fStatus" class="fStatus">
+                                        <option value="Pending">Pending</option>
+                                        <option value="Offered">Offered</option>
+                                        <option value="Not Offered">Not Offered</option>
+                                        <option value="Joined">Joined</option>
+                                        <option value="Not Joined">Not Joined</option>
+                                    </select>
+                                    {% elif i.selectionstatus == 'Joined' %}
+                                        {{ i.selectionstatus }} - {{ i.candempid }}
+                                    {% else %}
+                                        <select name="fStatus" class="fStatus">
+                                            <option value="" hidden>{{ i.selectionstatus }}</option>
+                                            <option value="Pending">Pending</option>
+                                            <option value="Offered">Offered</option>
+                                            <option value="Not Offered">Not Offered</option>
+                                            <option value="Joined">Joined</option>
+                                            <option value="Not Joined">Not Joined</option>
+                                        </select>
+                                    {% endif %}
+                                </form>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                </div>
+            </div>
+        </div>
+    </main>
+    {% else %}
+    <h2>You do not have admin rights.</h2>
+    {% endif %}
+
+
+    <!-- Script
+    ------------------------>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js"></script>
+
+    <script src="https://cdn.datatables.net/buttons/1.6.1/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.6.1/js/buttons.flash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.6.1/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.6.1/js/buttons.print.min.js"></script>
+
+
+    <script src="{% static 'js/admin/admin.js' %}"></script>
+    <script>
+        $(document).ready(function() {
+            $('#subTable').DataTable({
+                "scrollX": true,
+                fixedColumns:   {
+                    leftColumns: 0,
+                    rightColumns: 1
+                },
+                dom: 'Bfrtip',
+                order: [],
+                buttons: [
+                    // 'copy', 'csv', 'excel', 'pdf', 'print'
+                    {
+                        extend: 'excelHtml5',
+                        exportOptions: {
+                            columns: [0,1,2,3,4,5,6,7,8,9]
+                        }
+                    }
+                ]
+            });
+        });
+
+        let fStatus = document.querySelectorAll('.fStatus');
+        [...fStatus].map(m => {
+            m.addEventListener('change', () => {
+                const mOpt = m.options[m.selectedIndex].value;
+                if(mOpt === 'Joined'){
+                    const inpDiv = document.createElement('div');
+                    inpDiv.setAttribute('class', 'form-input-div');
+                    const inp = document.createElement('input');
+                    inp.setAttribute('name', 'empId');
+                    inp.setAttribute('class', 'empID');
+                    inp.setAttribute('placeholder', 'Employee ID');
+                    const btn = document.createElement('button');
+                    btn.setAttribute('type', 'submit');
+                    btn.setAttribute('class', 'btn--final ml-2');
+                    btn.innerHTML = '<i class="fas fa-check"></i>';
+                    inpDiv.appendChild(inp);
+                    inpDiv.appendChild(btn);
+                    m.style.display = 'none';
+                    m.parentElement.appendChild(inpDiv);
+                }else{
+                    m.parentElement.submit();
+                }
+            });
+        });
+    </script>
+</body>
+</html>

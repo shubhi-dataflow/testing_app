@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="description" content="DataFlow | Candidate Testing Portal">
+    {% load staticfiles %}
+    <!-- Favicon -->
+    <link rel="icon" href="{% static 'images/DF Logo.svg' %}">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'css/index.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+    <!-- Fontawesome -->
+    <script src="https://kit.fontawesome.com/11dafce953.js" crossorigin="anonymous"></script>
+
+    <title>Instructions | Candidate Portal</title>
+</head>
+<body>
+    <noscript>
+        Your Browser's JavaScript has been turned off kindly enable it.
+    </noscript>
+
+    <div class="app">
+
+        {% include 'application/header.html' %}
+
+        <main class="render">
+
+            <section class="user-data mb-4">
+                <p class="user-data-head mb-2">Candidate Details</p>
+                <div class="brief">
+                    <div class="brief-box">
+                        <p class="tag">Name:</p>
+                        <p class="tag-value">{{ name }}</p>
+                    </div>
+                    <div class="brief-box">
+                        <p class="tag">Email:</p>
+                        <p class="tag-value">{{ email }}</p>
+                    </div>
+                    <div class="brief-box">
+                        <p class="tag">Phone no:</p>
+                        <p class="tag-value">{{ phone }}</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="instruction-data mb-4">
+                <p class="instructuion-data-head mb-2">Instructions</p>
+                <div class="instructions">
+                    <p class="imp-note">Note: Read through instructions given below carefully before attempting test</p>
+                    <ul class="instruction-list">
+                        {% for i in instruct %}
+                            <li>{{ i }}</li>
+                        {% endfor %}
+                    </ul>
+                    <strong class="wishes">BEST OF LUCK (づ ◕‿◕ )づ</strong>
+                </div>
+            </section>
+
+<section class="declaration-data mb-4">
+                <p class="declaration-data-head mb-2">Declaration</p>
+                <div class="declaration">
+                    <p class="mb-1">I hereby provide my consent to the use of my personal information provided in my job application for the purpose of conducting the recruitment process with DataFlow.</p>
+                    <p>
+                        By sharing personal information with applicable details, I acknowledge and agree that the information I have submitted is complete and correct to the best of my knowledge. 
+                        I agree that providing false information in the creation of my job profile or during the application process will lead to my rejection or termination. 
+                        I hereby agree/ disagree to use of my personal data for above mentioned purpose by responding back to this email:
+                    </p>
+
+                    <p class="more-info mt-3">
+                        For more information about our privacy practices, please visit our website Landing - <a href="https://corp.dataflowgroup.com/" class="text-blue-600 underline">Dataflow Group</a> or our website privacy policy <a href="https://corp.dataflowgroup.com/about-us/our-policies/general-applicant-privacy-policy/" class="text-blue-600 underline">General Applicant Privacy Policy - Dataflow Group</a>.
+                    </p>
+                </div>
+            </section>
+
+
+            
+            
+            <div class="agreement-box">
+                <input type="checkbox" id="declartion" name="declartion">
+                <label for="declartion">I agree to the above declration</label>
+            </div>
+
+            <button class="btn--primary start-test" disabled>Start Test<i class="fas fa-chevron-right"></i></button>
+
+        </main>
+
+        <section class="start-test-info">
+            <div class="overlay-sect">
+                <p class="title">Make an attempt</p>
+                <div class="cold-info">
+                    <p>This test has a time limit of 60mins. Count down will start the moment you start the test. You've to submit the test within 60 minutes or else it will automatically get submitted.</p><br>
+                    <strong>Are you sure you wish to start now?</strong>
+                </div>
+                <div class="buttons">
+                    <a href="{% url 'application:panel' %}" class="btn--primary text-center">Continue</a>
+                    <a class="btn--cancel text-center cancel-no">Cancel</a>
+                </div>
+            </div>
+        </section>
+
+    </div>
+    
+    <!-- Script -->
+    <script src="{% static 'js/user/interactive.js' %}"></script>
+    <script src="{% static 'js/user/inspect.js' %}"></script>
+    <script defer>
+        let decelement = document.getElementById('declartion');
+        {% if declaration_accepted == 'Yes' %}
+        decelement.checked = true;
+        decelement.dispatchEvent(new Event("change"));
+        {% else %}
+        decelement.checked = false;
+        
+
+        {% endif %}
+
+    </script>
+
+</body>
+</html>

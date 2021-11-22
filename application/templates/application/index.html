@@ -1,0 +1,48 @@
+{% extends "application/base_login.html" %}
+{% load staticfiles %}
+
+{% block title %}Login | Candidate Portal{% endblock %}
+
+{% block body %}
+
+<div class="form-section">
+    <section class="form-title">
+        <p class="form-title--pre">Welcome</p>
+        <p class="form-title--heading"><span>Login to</span><span>Candidate Portal</span></p>
+    </section>
+    <section class="form-login">
+        <form action="{% url 'application:logincand' %}" method="POST" class="login-form" id="loginForm">
+            {% csrf_token %}
+            {% for message in messages %}
+            <div class="alert alert-danger error-message">
+                <a class="close" href="#" data-dismiss="alert"></a>
+                <p>{{ message }}</p>
+            </div>
+            {% endfor %}
+            
+            <div class="form-component">
+                <input type="text" name="username" class="input-field" autocomplete="off" required>
+                <span class="label-placeholder">Username</span>
+            </div>
+
+            <div class="form-component">
+                <input type="password" name="password" class="input-field" autocomplete="off" required>
+                <span class="label-placeholder">Password</span>
+                <span class="password-eye" title="Show Password">
+                    <i class="fas fa-eye-slash"></i>
+                </span>
+            </div>
+
+            <div class="form-bottom">
+                <button type="submit" class="btn--primary" id="loginBtn">Login</button>
+                <p class="goto-signup">Don't have an account? <a href="{% url 'application:appsignup' %}">Register</a></p>
+            </div>
+        </form>
+    </section>
+</div>
+
+{% endblock %}
+
+{% block script %}
+<script src="{% static 'js/user/interactive.js' %}"></script>
+{% endblock %}

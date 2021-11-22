@@ -1,0 +1,38 @@
+<div id="grid">
+    <p></p><p></p><p></p><p></p><p></p><p></p><p></p><p></p><p></p><p></p><p></p>
+</div>
+
+<aside class="nav">
+    <ul class="navbar">
+        <li class="nav-items">
+            <a href="{% url 'adminboard:adminhome' %}" class="list adminhome">
+                <i class="fas fa-home"></i>
+                Home
+            </a>
+        </li>
+        <li class="nav-items">
+            <a href="{% url 'adminboard:adminuser' %}" class="list adminuser">
+                <i class="fas fa-user"></i>
+                User
+            </a>
+        </li>
+        <li class="nav-items">
+            <a href="{% url 'adminboard:addquest' %}" class="list addquest">
+                <i class="fas fa-book"></i>
+                Question
+            </a>
+        </li>
+        <li class="nav-items">
+            <a href="{% url 'adminboard:submission' %}" class="list submissions">
+                <i class="fas fa-tasks"></i>
+                Finalize
+            </a>
+        </li>
+        <li class="nav-items">
+            <a href="{% url 'adminboard:other' %}" class="list other">
+                <i class="fas fa-th-large"></i>
+                Others
+            </a>
+        </li>
+    </ul>
+</aside>

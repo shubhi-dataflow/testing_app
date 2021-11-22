@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="description" content="DataFlow | Candidate Testing Portal">
+    {% load staticfiles %}
+    <!-- Favicon -->
+    <link rel="icon" href="{% static 'images/DF Logo.svg' %}">
+
+    <!-- CDN CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{% static 'css/admin_home.css' %}">
+
+    <!-- Fontawesome -->
+    <script src="https://kit.fontawesome.com/11dafce953.js" crossorigin="anonymous"></script>
+
+    <title>Questions Upload</title>
+</head>
+<body>
+
+    <noscript>
+        Your Browser's JavaScript has been turned off kindly enable it.
+    </noscript>
+
+    {% include 'adminboard/header.html' %}
+
+    <main class="board container-fluid">
+        
+        {% include 'adminboard/aside.html' %}
+
+        <div class="screen">
+            <div class="screen__table">
+                <div class="screen__table__top">
+                    <h3 class="table-title">Question Bank</h3>
+                    <a href="{% url 'adminboard:viewquest' %}" class="a--back"><i class="fas fa-chevron-left pr-2"></i> View Questions</a>
+                </div>
+
+                <div class="tab">
+                    <ul class="tabs-nav">
+                        <span class="back-span"></span>
+                        <li class="tab-items" data-id="single">Single Upload</li>
+                        <li class="tab-items" data-id="bulk">Bulk Upload</li>
+                    </ul>
+                </div>
+                {% block question %}
+                    <div class="drag hidden">
+                        <form action="{% url 'adminboard:bulkupload' %}" method="post" id="bulk-form" enctype="multipart/form-data">{% csrf_token %}
+                            <div class="form-group inputDnD">
+                                <label class="sr-only" for="inputFile">File Upload</label>
+                                <input type="file" name="bulk" class="form-control-file text-primary font-weight-bold" id="inputFile" accept=".csv" onchange="readUrl(this)" data-title="Drag and drop a file">
+                            </div>
+
+                            <div class="btn-div mt-4">
+                                <button type="submit" class="btn btn--success">Upload</button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="normal">
+                        <form action="{% url 'adminboard:addquest' %}" method="POST" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="form2">
+                                <div class="form-div">
+                                    <label for="question" class="form-label">Question</label>
+                                    <textarea name="question" id="question" class="form-elem form-textarea"></textarea>
+                                </div>
+
+                                <div class="form">
+                                    <div class="form-div">
+                                        <label for="opt1" class="form-label">Option1</label>
+                                        <input type="text" name="opt1" id="opt1" class="form-elem" required="required">
+                                    </div>
+                                    <div class="form-div">
+                                        <label for="opt2" class="form-label">Option2</label>
+                                        <input type="text" name="opt2" id="opt2" class="form-elem" required="required">
+                                    </div>
+                                    <div class="form-div">
+                                        <label for="opt3" class="form-label">Option3</label>
+                                        <input type="text" name="opt3" id="opt3" class="form-elem" required="required">
+                                    </div>
+                                    <div class="form-div">
+                                        <label for="opt4" class="form-label">Option4</label>
+                                        <input type="text" name="opt4" id="opt4" class="form-elem" required="required">
+                                    </div>
+                                    <div class="form-div">
+                                        <label for="opt5" class="form-label">Option5</label>
+                                        <input type="text" name="opt5" id="opt5" class="form-elem">
+                                    </div>
+                                    <div class="form-div">
+                                        <label for="correct" class="form-label">Correct Option</label>
+                                        <input type="text" name="correct" id="correct" class="form-elem" required="required">
+                                    </div>
+                                    <div class="form-div">
+                                        <label for="category" class="form-label">Category</label>
+                                        <select name="category" id="category" class="form-elem" required="required">
+                                            <option value="">--select--</option>
+                                            <option value="English">English (Comprehension)</option>
+                                            <option value="Reasoning">Reasoning</option>
+                                            <option value="Psychometric">Quantitative</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="btn-div mt-4">
+                                <button type="submit" class="btn btn--success">Submit</button>
+                                <button type="reset" class="btn btn--reset">Reset</button>
+                            </div>
+                        </form>
+                    </div>
+                {% endblock %}
+
+
+            </div>
+        </div>
+    </main>
+
+
+    <!-- Script
+    ------------------------>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js"></script>
+    <script src="{% static 'js/admin/admin.js' %}"></script>
+    <script src="{% static 'js/admin/tab.js' %}"></script>
+    {% block script %}{% endblock %}
+</body>
+</html>
